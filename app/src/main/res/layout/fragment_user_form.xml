@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                                     xmlns:app="http://schemas.android.com/apk/res-auto"
+                                    xmlns:tools="http://schemas.android.com/tools"
                                     android:layout_width="match_parent"
                                     android:layout_height="wrap_content"
-                                    android:layout_margin="10dp"
-                                    android:elevation="2dp"
-                                    android:orientation="vertical"
-                                    app:cardUseCompatPadding="true"
-                                    app:contentPadding="10dp">
+                                    >
 
+    <android.support.v7.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp"
+        android:elevation="2dp"
+        android:orientation="vertical"
+        app:cardUseCompatPadding="true"
+        app:contentPadding="10dp">
+        
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -17,42 +23,66 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:paddingBottom="20dp"
             android:text="Login info"
-            android:textSize="20sp"
-            android:paddingBottom="20dp"/>
+            android:textSize="20sp"/>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearence.TextInputLayout.Blue"
+            >
 
             <EditText
-                android:id="@+id/username"
+                android:id="@+id/name"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="Username"/>
+                android:hint="Name"
+                android:inputType="textPersonName"
+                tools:text="Name"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearence.TextInputLayout.Blue">
 
             <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="Email"/>
+                android:hint="Email"
+                android:inputType="text"
+                tools:text="Email"/>
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearence.TextInputLayout.Blue">
 
             <EditText
-
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:hint="Password"/>
+                android:hint="Password"
+                android:inputType="textPassword"
+                tools:text="Password"
+                />
+        </android.support.design.widget.TextInputLayout>
+
+        <android.support.design.widget.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:hintTextAppearance="@style/TextAppearence.TextInputLayout.Blue">
+
+            <EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:hint="Age"
+                android:inputType="number"
+                tools:text="Age"/>
         </android.support.design.widget.TextInputLayout>
 
     </LinearLayout>
 
-</android.support.v7.widget.CardView>
+    </android.support.v7.widget.CardView>
+</ScrollView>

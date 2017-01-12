@@ -1,10 +1,46 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
 
-    android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".MainActivity"
-    tools:ignore="MergeRootFrame" />
+    android:orientation="vertical"
+    tools:ignore="MergeRootFrame">
+
+    <android.support.design.widget.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.design.widget.TabItem
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:text="MVC"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:text="MVP"/>
+
+        <android.support.design.widget.TabItem
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:text="MVVM"/>
+
+    </android.support.design.widget.TabLayout>
+
+    <FrameLayout
+        android:id="@+id/container"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </FrameLayout>
+
+    <android.support.v4.view.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="1"
+        android:background="@android:color/white"/>
+
+</LinearLayout>
