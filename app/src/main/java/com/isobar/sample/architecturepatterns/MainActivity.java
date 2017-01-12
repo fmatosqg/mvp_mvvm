@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-/*
+
         Fragment fragment = new FragmentListMvc();
         fragment = new FragmentFormMvc();
 
@@ -34,6 +34,6 @@ public class MainActivity extends AppCompatActivity {
                 .add(R.id.container, fragment, getClass().getCanonicalName())
                 .commit();
 
-        getFragmentManager().executePendingTransactions();*/
+        getFragmentManager().executePendingTransactions();
     }
 }
