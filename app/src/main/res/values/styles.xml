@@ -10,6 +10,7 @@
 
     <style name="TextAppearence.TextInputLayout.Blue" parent="@android:style/TextAppearance">
         <item name="android:textColor">#4477aa</item>
+        <item name="android:textStyle">bold</item>
     </style>
 
     <color name="text_hint">#4444ff</color>

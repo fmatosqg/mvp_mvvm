@@ -5,15 +5,18 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".MainActivity"
+    tools:context=".view.MainActivity"
     android:orientation="vertical"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.TabLayout
+        android:id="@+id/activity_tabs"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        >
 
         <android.support.design.widget.TabItem
+            android:id="@+id/activity_tab_mvc"
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:text="MVC"/>
@@ -27,6 +30,12 @@
             android:layout_width="10dp"
             android:layout_height="10dp"
             android:text="MVVM"/>
+
+        <android.support.design.widget.TabItem
+            android:id="@+id/activity_tab_data_binding"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:text="Data Binding"/>
 
     </android.support.design.widget.TabLayout>
 
