@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              xmlns:tools="http://schemas.android.com/tools"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              xmlns:tools="http://schemas.android.com/tools"
               android:orientation="vertical"
               android:padding="10dp">
 
@@ -10,8 +10,8 @@
         android:id="@+id/list_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        tools:text="MVC demo"
-        android:textSize="22sp"/>
+        android:textSize="22sp"
+        tools:text="MVC demo"/>
 
     <Button
         android:id="@+id/list_edit_user_button"
@@ -26,5 +26,36 @@
         android:layout_height="wrap_content"
         android:text="New User"
         android:textSize="20dp"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/list_recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone"
+            tools:visibility="visible"
+            />
+
+        <LinearLayout
+            android:id="@+id/list_placeholder"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:visibility="visible"
+            tools:visibility="gone"
+            >
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="This is a placeholder view"
+                android:textSize="30dp"/>
+        </LinearLayout>
+
+    </RelativeLayout>
+
 
 </LinearLayout>

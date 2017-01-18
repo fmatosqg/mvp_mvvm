@@ -55,7 +55,7 @@ public class FragmentListMvp extends CommonFragment implements ListMvpView {
 
     public static void createAndOpen(FragmentManager supportFragmentManager) {
 
-        createAndOpen(supportFragmentManager,new FragmentListMvp());
+        clearStackAndAdd(supportFragmentManager,new FragmentListMvp());
     }
 
 

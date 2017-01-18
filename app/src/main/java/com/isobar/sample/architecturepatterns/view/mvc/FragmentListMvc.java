@@ -2,17 +2,22 @@ package com.isobar.sample.architecturepatterns.view.mvc;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.isobar.sample.architecturepatterns.R;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
+
+import java.util.Collection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -24,10 +29,16 @@ import butterknife.OnClick;
 
 public class FragmentListMvc extends CommonFragment {
 
-    private final static String TAG = FragmentListMvc.class.getCanonicalName();
+    private final static String TAG = FragmentListMvc.class.getSimpleName();
 
     @BindView(R.id.list_title)
     TextView titleView;
+
+    @BindView(R.id.list_recycler_view)
+    RecyclerView recyclerView;
+
+    @BindView(R.id.list_placeholder)
+    LinearLayout placeholder;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -38,6 +49,40 @@ public class FragmentListMvc extends CommonFragment {
         ButterKnife.bind(this, view);
 
         titleView.setText("MVC");
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        final UserListAdapter adapter = new UserListAdapter();
+        recyclerView.setAdapter(adapter);
+
+        Log.i(TAG,"Loading people started");
+        adapter.getPeople(new UserListAdapter.DatabaseLoadListener() {
+            @Override
+            public void onDataReceived(final Collection<Person> cachedPeopleList) {
+
+                if ( getActivity() == null ) {
+                    return;
+                }
+
+                getActivity().runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        Log.i(TAG,"Loading people done");
+                        if (cachedPeopleList.size() > 0) {
+                            recyclerView.setVisibility(View.VISIBLE);
+                            placeholder.setVisibility(View.GONE);
+                        } else {
+                            recyclerView.setVisibility(View.GONE);
+                            placeholder.setVisibility(View.VISIBLE);
+                        }
+
+                        adapter.notifyDataSetChanged();
+                    }
+                });
+            }
+        });
 
         return view;
     }
@@ -59,11 +104,11 @@ public class FragmentListMvc extends CommonFragment {
     @OnClick(R.id.list_new_user_button)
     void newUser() {
 
-        FragmentFormMvc.createAndOpen(getActivity().getSupportFragmentManager(), (Person)null);
+        FragmentFormMvc.createAndOpen(getActivity().getSupportFragmentManager(), (Person) null);
     }
 
     public static void createAndOpen(FragmentManager supportFragmentManager) {
 
-        createAndOpen(supportFragmentManager, new FragmentListMvc());
+        clearStackAndAdd(supportFragmentManager, new FragmentListMvc());
     }
 }

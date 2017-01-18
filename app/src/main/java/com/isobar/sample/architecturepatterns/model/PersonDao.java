@@ -1,7 +1,10 @@
 package com.isobar.sample.architecturepatterns.model;
 
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -16,7 +19,7 @@ public class PersonDao {
 
     public static PersonDao getInstance() {
 
-        if  (instance == null ) {
+        if (instance == null) {
             instance = new PersonDao();
         }
         return instance;
@@ -48,6 +51,9 @@ public class PersonDao {
         return p;
     }
 
+    public int queryCount() {
+        return people.values().size();
+    }
 
     public Collection<Person> queryAll() {
 
@@ -76,4 +82,13 @@ public class PersonDao {
         return addPerson(p);
 
     }
+
+    public Person queryByPosition(int position) {
+
+        List<Person> peopleList = new LinkedList<Person>(queryAll());
+
+        return peopleList.get(position);
+
+    }
+
 }

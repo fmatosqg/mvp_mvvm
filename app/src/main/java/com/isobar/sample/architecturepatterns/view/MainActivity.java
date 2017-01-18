@@ -12,6 +12,8 @@ import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.mvc.FragmentListMvc;
 import com.isobar.sample.architecturepatterns.view.mvp.list.FragmentListMvp;
 
+import java.util.List;
+
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
@@ -55,8 +57,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateFragment(int position) {
-
-        getSupportFragmentManager().popBackStack();
 
         switch (position) {
             case 0: // MVC
