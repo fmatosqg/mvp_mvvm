@@ -47,18 +47,6 @@ public class CommonFragment extends Fragment {
 
     }
 
-    private static Fragment getPrevFragment(FragmentManager supportFragmentManager) {
-
-        Fragment prevFragment = null;
-
-        List<Fragment> list = supportFragmentManager.getFragments();
-        if (list != null && list.size() > 0) {
-            prevFragment = list.get(list.size() - 1);
-        }
-
-        return prevFragment;
-    }
-
     public static void addToStack(FragmentManager supportFragmentManager, Fragment fragment) {
 
         supportFragmentManager

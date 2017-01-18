@@ -22,13 +22,13 @@ import butterknife.ButterKnife;
  * Created by fabio.goncalves on 18/01/2017.
  */
 
-public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHolder> {
+public class UserListAdapterMvc extends RecyclerView.Adapter<UserListAdapterMvc.ViewHolder> {
 
     private PersonDao personDao;
     private List<Person> cachedPeopleList;
 
     @Override
-    public UserListAdapter.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public UserListAdapterMvc.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_row_view, parent, false);
 
@@ -39,7 +39,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
     }
 
     @Override
-    public void onBindViewHolder(UserListAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(UserListAdapterMvc.ViewHolder holder, int position) {
 
         Person person = null;
 
@@ -49,7 +49,7 @@ public class UserListAdapter extends RecyclerView.Adapter<UserListAdapter.ViewHo
 
         if (person != null) {
             holder.userName.setText(person.name);
-            holder.email.setText(person.reminder);
+            holder.email.setText(person.email);
         } else {
             holder.userName.setText("");
             holder.email.setText("");

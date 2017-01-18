@@ -38,7 +38,10 @@ public class FragmentListMvc extends CommonFragment {
     RecyclerView recyclerView;
 
     @BindView(R.id.list_placeholder)
-    LinearLayout placeholder;
+    LinearLayout placeholderLayout;
+
+    @BindView(R.id.list_operation_in_progress)
+    LinearLayout inProgressLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -53,13 +56,18 @@ public class FragmentListMvc extends CommonFragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        final UserListAdapter adapter = new UserListAdapter();
+        final UserListAdapterMvc adapter = new UserListAdapterMvc();
         recyclerView.setAdapter(adapter);
 
+        placeholderLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.GONE);
+        inProgressLayout.setVisibility(View.VISIBLE);
         Log.i(TAG,"Loading people started");
-        adapter.getPeople(new UserListAdapter.DatabaseLoadListener() {
+        adapter.getPeople(new UserListAdapterMvc.DatabaseLoadListener() {
             @Override
             public void onDataReceived(final Collection<Person> cachedPeopleList) {
+
+                Log.i(TAG,"Loading people done");
 
                 if ( getActivity() == null ) {
                     return;
@@ -69,13 +77,13 @@ public class FragmentListMvc extends CommonFragment {
                     @Override
                     public void run() {
 
-                        Log.i(TAG,"Loading people done");
+                        inProgressLayout.setVisibility(View.GONE);
                         if (cachedPeopleList.size() > 0) {
                             recyclerView.setVisibility(View.VISIBLE);
-                            placeholder.setVisibility(View.GONE);
+                            placeholderLayout.setVisibility(View.GONE);
                         } else {
                             recyclerView.setVisibility(View.GONE);
-                            placeholder.setVisibility(View.VISIBLE);
+                            placeholderLayout.setVisibility(View.VISIBLE);
                         }
 
                         adapter.notifyDataSetChanged();

@@ -11,7 +11,7 @@ public class Person {
 
     public Integer pk;
 
-    public Person(String name, String password, String email, int age, String reminder) {
+    public Person(String name, String email, String password, int age, String reminder) {
         this.name = name;
         this.password = password;
         this.email = email;
