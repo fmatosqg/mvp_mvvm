@@ -14,6 +14,7 @@ import android.widget.EditText;
 import com.isobar.sample.architecturepatterns.R;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
+import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -22,7 +23,7 @@ import butterknife.OnClick;
 /**
  * Created by fabio.goncalves on 12/01/2017.
  */
-public class FragmentFormMvc extends Fragment {
+public class FragmentFormMvc extends CommonFragment {
 
     public static final String BUNDLE_ARGUMENT_PERSON_PK = "BUNDLE_ARGUMENT_PERSON_PK";
 
@@ -106,12 +107,6 @@ public class FragmentFormMvc extends Fragment {
             fragment.setArguments(bundle);
         }
 
-        supportFragmentManager
-                .beginTransaction()
-                .replace(R.id.container, fragment)
-                .addToBackStack(fragment.getClass().getCanonicalName())
-                .commit();
-
-        supportFragmentManager.executePendingTransactions();
+        createAndOpen(supportFragmentManager,fragment);
     }
 }

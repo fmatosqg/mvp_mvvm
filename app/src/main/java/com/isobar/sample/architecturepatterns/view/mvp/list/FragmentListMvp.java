@@ -1,33 +1,31 @@
-package com.isobar.sample.architecturepatterns.view.mvc;
+package com.isobar.sample.architecturepatterns.view.mvp.list;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
-import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.isobar.sample.architecturepatterns.R;
-import com.isobar.sample.architecturepatterns.model.Person;
-import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
+import com.isobar.sample.architecturepatterns.view.mvc.FragmentListMvc;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
- * Created by fabio.goncalves on 12/01/2017.
+ * Created by fabio.goncalves on 13/01/2017.
  */
-
-public class FragmentListMvc extends CommonFragment {
+public class FragmentListMvp extends CommonFragment implements ListMvpView {
 
     private final static String TAG = FragmentListMvc.class.getCanonicalName();
 
     @BindView(R.id.list_title)
     TextView titleView;
+
+    private ListMvpPresenter presenter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -37,33 +35,28 @@ public class FragmentListMvc extends CommonFragment {
 
         ButterKnife.bind(this, view);
 
-        titleView.setText("MVC");
+        presenter = new ListMvpPresenterImp();
+        presenter.attachView(this);
 
+        titleView.setText("MVP");
         return view;
     }
 
     @OnClick(R.id.list_edit_user_button)
     void editUser() {
-
-        TimingLogger timings = new TimingLogger("TAG_MYJOB", "MyJob");
-        timings.addSplit("Start");
-        Log.i(TAG, "Edit");
-
-        Person person = PersonDao.getInstance().queryAll().iterator().next();
-        timings.addSplit("Query");
-        FragmentFormMvc.createAndOpen(getActivity().getSupportFragmentManager(), person);
-        timings.addSplit("Fragment transition");
-        timings.dumpToLog();
+        presenter.editUser();
     }
 
     @OnClick(R.id.list_new_user_button)
-    void newUser() {
-
-        FragmentFormMvc.createAndOpen(getActivity().getSupportFragmentManager(), (Person)null);
+    void newUser(){
+        presenter.newUser();
     }
+
 
     public static void createAndOpen(FragmentManager supportFragmentManager) {
 
-        createAndOpen(supportFragmentManager, new FragmentListMvc());
+        createAndOpen(supportFragmentManager,new FragmentListMvp());
     }
+
+
 }
