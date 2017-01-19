@@ -30,6 +30,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
+
 /**
  * Created by fabio.goncalves on 13/01/2017.
  */
@@ -39,6 +42,10 @@ public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> 
 
     @BindView(R.id.list_title)
     TextView titleView;
+
+    @BindView(R.id.list_error)
+    TextView errorView;
+
 
     @BindView(R.id.list_recycler_view)
     RecyclerView recyclerView;
@@ -91,25 +98,28 @@ public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> 
     public void showList() {
 
         Log.i(TAG,"Showing list");
-        recyclerView.setVisibility(View.VISIBLE);
-        placeholderLayout.setVisibility(View.GONE);
-        inProgressLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(VISIBLE);
+        placeholderLayout.setVisibility(GONE);
+        inProgressLayout.setVisibility(GONE);
     }
 
     @Override
     public void showSpinner() {
-        recyclerView.setVisibility(View.GONE);
-        placeholderLayout.setVisibility(View.GONE);
-        inProgressLayout.setVisibility(View.VISIBLE);
-
+        recyclerView.setVisibility(GONE);
+        placeholderLayout.setVisibility(GONE);
+        inProgressLayout.setVisibility(VISIBLE);
     }
 
     @Override
     public void showPlaceholder() {
-        recyclerView.setVisibility(View.GONE);
-        placeholderLayout.setVisibility(View.VISIBLE);
-        inProgressLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(GONE);
+        placeholderLayout.setVisibility(VISIBLE);
+        inProgressLayout.setVisibility(GONE);
+    }
 
+    @Override
+    public void showError(boolean isShowError) {
+        errorView.setVisibility(isShowError ? VISIBLE : GONE);
     }
 
     public static void createAndOpen(FragmentManager supportFragmentManager) {

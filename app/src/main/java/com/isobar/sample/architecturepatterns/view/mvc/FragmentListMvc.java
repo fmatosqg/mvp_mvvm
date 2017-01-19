@@ -19,6 +19,7 @@ import com.isobar.sample.architecturepatterns.bus.EventBus;
 import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
+import com.isobar.sample.architecturepatterns.model.RandomFailureException;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
 import com.squareup.otto.Subscribe;
 
@@ -27,6 +28,9 @@ import java.util.Collection;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static android.view.View.GONE;
+import static android.view.View.VISIBLE;
 
 /**
  * Created by fabio.goncalves on 12/01/2017.
@@ -39,6 +43,9 @@ public class FragmentListMvc extends CommonFragment {
     @BindView(R.id.list_title)
     TextView titleView;
 
+    @BindView(R.id.list_error)
+    TextView errorView;
+
     @BindView(R.id.list_recycler_view)
     RecyclerView recyclerView;
 
@@ -50,6 +57,8 @@ public class FragmentListMvc extends CommonFragment {
 
     private AsyncTask<Void, Void, Collection<Person>> task;
     private UserListAdapterMvc adapter;
+
+    private boolean isDaoFailed;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -67,9 +76,9 @@ public class FragmentListMvc extends CommonFragment {
         adapter = new UserListAdapterMvc();
         recyclerView.setAdapter(adapter);
 
-        placeholderLayout.setVisibility(View.GONE);
-        recyclerView.setVisibility(View.GONE);
-        inProgressLayout.setVisibility(View.VISIBLE);
+        placeholderLayout.setVisibility(GONE);
+        recyclerView.setVisibility(GONE);
+        inProgressLayout.setVisibility(VISIBLE);
         Log.i(TAG, "Loading people started");
 
         loadPeopleList();
@@ -81,25 +90,39 @@ public class FragmentListMvc extends CommonFragment {
 
     private void loadPeopleList() {
 
+        isDaoFailed = false;
+
         task = new AsyncTask<Void, Void, Collection<Person>>() {
             @Override
             protected Collection<Person> doInBackground(Void... voids) {
-                return PersonDao.getInstance().queryAll();
+                Collection<Person> peopleList = null;
+                try {
+                    peopleList = PersonDao.getInstance().queryAll();
+                } catch (RandomFailureException e) {
+                    e.printStackTrace();
+                    isDaoFailed = true;
+                }
+
+                return peopleList;
             }
 
             @Override
             protected void onPostExecute(Collection<Person> peopleList) {
-                inProgressLayout.setVisibility(View.GONE);
-                if (peopleList.size() > 0) {
-                    recyclerView.setVisibility(View.VISIBLE);
-                    placeholderLayout.setVisibility(View.GONE);
+
+                inProgressLayout.setVisibility(GONE);
+                if (peopleList != null && peopleList.size() > 0) {
+                    recyclerView.setVisibility(VISIBLE);
+                    placeholderLayout.setVisibility(GONE);
                 } else {
-                    recyclerView.setVisibility(View.GONE);
-                    placeholderLayout.setVisibility(View.VISIBLE);
+                    recyclerView.setVisibility(GONE);
+                    placeholderLayout.setVisibility(VISIBLE);
                 }
 
                 adapter.setPeopleList(peopleList);
                 adapter.notifyDataSetChanged();
+
+                errorView.setVisibility(isDaoFailed ? VISIBLE : GONE);
+
             }
         };
 

@@ -20,6 +20,7 @@ public class PersonDao {
     private int insertCount = 0;
     private Map<Integer, Person> people;
     private static PersonDao instance;
+    private boolean failureProgrammed = true;
 
     public static PersonDao getInstance() {
 
@@ -35,22 +36,24 @@ public class PersonDao {
         addAllPeople();
     }
 
-
     private void addAllPeople() {
 
         addPerson(new Person("John Doe", "john@doe", "jd", 10, "Martini"));
         addPerson(new Person("Mary Jane", "mary@jane", "mj", 11, "Beer"));
 
+        failureProgrammed = false;
         Thread th = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     Thread.sleep(5000);
+                    failureProgrammed = true;
                     addPerson(new Person("Baby Bob", "bob@justBorn.com", "bb", 0, "Milk"));
                     EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
                     Log.i(TAG, "New baby is born");
 
                     Thread.sleep(4000);
+                    failureProgrammed = false;
                     addPerson(new Person("Baby Be", "b@justBorn.com", "bb", 0, "Milk"));
                     EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
                     Log.i(TAG, "Another baby is born");
@@ -61,6 +64,8 @@ public class PersonDao {
         });
 
         th.start();
+
+
 
     }
 
@@ -85,10 +90,12 @@ public class PersonDao {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-
             Log.i(TAG, "Sleep interrupted!!!");
         }
 
+        if ( failureProgrammed ) {
+            throw new RandomFailureException("I don't like being queried on Mondays");
+        }
         return people.values();
     }
 
