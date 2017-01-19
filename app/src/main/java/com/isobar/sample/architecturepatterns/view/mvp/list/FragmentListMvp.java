@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import com.isobar.sample.architecturepatterns.R;
 import com.isobar.sample.architecturepatterns.model.Person;
+import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
 import com.isobar.sample.architecturepatterns.view.mvc.FragmentListMvc;
 import com.isobar.sample.architecturepatterns.view.mvp.interfaces.MvpFragment;
@@ -58,7 +59,7 @@ public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> 
 
         titleView.setText("MVP");
 
-        presenter = new ListMvpPresenterImp(this);
+        presenter = new ListMvpPresenterImp(this, PersonDao.getInstance());
         presenter.loadUserList();
         return view;
     }

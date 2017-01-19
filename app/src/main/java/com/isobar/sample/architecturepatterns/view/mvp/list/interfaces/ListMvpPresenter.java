@@ -1,7 +1,6 @@
 package com.isobar.sample.architecturepatterns.view.mvp.list.interfaces;
 
 import android.support.v4.app.FragmentManager;
-import android.support.v7.app.AppCompatActivity;
 
 import com.isobar.sample.architecturepatterns.view.mvp.interfaces.MvpPresenter;
 

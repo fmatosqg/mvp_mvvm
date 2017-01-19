@@ -8,32 +8,35 @@ import android.util.TimingLogger;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.mvc.FragmentFormMvc;
+
+import com.isobar.sample.architecturepatterns.view.mvp.interfaces.MvpPresenterImpl;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpPresenter;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpView;
 
-import java.lang.ref.WeakReference;
+
 import java.util.Collection;
 
 /**
  * Created by fabio.goncalves on 13/01/2017.
  */
-public class ListMvpPresenterImp implements ListMvpPresenter {
+public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implements ListMvpPresenter {
 
     private static final String TAG = ListMvpPresenterImp.class.getSimpleName();
-    private WeakReference<ListMvpView> weakView;
     private boolean isAttached;
 
-    private PersonDao personDao;
+    final private PersonDao personDao;
     private AsyncTask<Void, Void, Collection<Person>> task;
 
     private ListMvpPresenterImp() {
+        personDao = null;
     }
 
-    public ListMvpPresenterImp(ListMvpView view) {
+    public ListMvpPresenterImp(ListMvpView view, PersonDao personDao) {
         isAttached = false;
-        personDao = PersonDao.getInstance();
+        this.personDao = personDao;
         task = null;
         attachView(view);
+        view.showPlaceholder();
     }
 
     @Override
@@ -62,7 +65,7 @@ public class ListMvpPresenterImp implements ListMvpPresenter {
         if (!isViewAttached()) {
             return;
         }
-        weakView.get().showSpinner();
+        getView().showSpinner();
         Log.i(TAG, "MVP - Loading people started");
 
         task = new AsyncTask<Void, Void, Collection<Person>>() {
@@ -83,9 +86,9 @@ public class ListMvpPresenterImp implements ListMvpPresenter {
                 Log.i(TAG, "MVP - Loading people on screen");
 
                 if (personList.size() > 0) {
-                    weakView.get().showList(personList);
+                    getView().showList(personList);
                 } else {
-                    weakView.get().showPlaceholder();
+                    getView().showPlaceholder();
                 }
             }
         };
@@ -94,20 +97,8 @@ public class ListMvpPresenterImp implements ListMvpPresenter {
     }
 
     @Override
-    public void attachView(ListMvpView view) {
-        weakView = new WeakReference<ListMvpView>(view);
-        isAttached = true;
-    }
-
-    @Override
-    public boolean isViewAttached() {
-        return isAttached && weakView.get() != null;
-    }
-
-    @Override
     public void detachView() {
         task.cancel(true);
-        weakView = null;
-        isAttached = false;
+        super.detachView();
     }
 }
