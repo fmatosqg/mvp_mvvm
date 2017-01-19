@@ -20,7 +20,6 @@ import butterknife.ButterKnife;
 /**
  * Created by fabio.goncalves on 19/01/2017.
  */
-
 class UserListAdapterMvp extends RecyclerView.Adapter<UserListAdapterMvp.ViewHolder> {
 
     private List<Person> personList;
@@ -36,7 +35,6 @@ class UserListAdapterMvp extends RecyclerView.Adapter<UserListAdapterMvp.ViewHol
         ViewHolder vh = new ViewHolder(v);
 
         return vh;
-
     }
 
     @Override
@@ -60,7 +58,6 @@ class UserListAdapterMvp extends RecyclerView.Adapter<UserListAdapterMvp.ViewHol
 
     public void setPersonList(Collection<Person> personList) {
         this.personList = new ArrayList<Person>(personList);
-        notifyDataSetChanged();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

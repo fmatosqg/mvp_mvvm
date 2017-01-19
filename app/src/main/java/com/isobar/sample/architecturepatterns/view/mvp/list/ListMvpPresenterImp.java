@@ -90,6 +90,7 @@ public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implement
                 if (personList.size() > 0) {
                     getView().showList();
                     adapter.setPersonList(personList);
+                    adapter.notifyDataSetChanged();
                 } else {
                     getView().showPlaceholder();
                 }

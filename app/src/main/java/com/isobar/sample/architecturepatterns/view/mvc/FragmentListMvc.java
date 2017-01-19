@@ -1,5 +1,6 @@
 package com.isobar.sample.architecturepatterns.view.mvc;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -43,6 +44,8 @@ public class FragmentListMvc extends CommonFragment {
     @BindView(R.id.list_operation_in_progress)
     LinearLayout inProgressLayout;
 
+    private AsyncTask<Void, Void, Collection<Person>> task;
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -62,37 +65,44 @@ public class FragmentListMvc extends CommonFragment {
         placeholderLayout.setVisibility(View.GONE);
         recyclerView.setVisibility(View.GONE);
         inProgressLayout.setVisibility(View.VISIBLE);
-        Log.i(TAG,"Loading people started");
-        adapter.getPeople(new UserListAdapterMvc.DatabaseLoadListener() {
+        Log.i(TAG, "Loading people started");
+
+
+        task = new AsyncTask<Void, Void, Collection<Person>>() {
             @Override
-            public void onDataReceived(final Collection<Person> cachedPeopleList) {
+            protected Collection<Person> doInBackground(Void... voids) {
+                return PersonDao.getInstance().queryAll();
+            }
 
-                Log.i(TAG,"Loading people done");
-
-                if ( getActivity() == null ) {
-                    return;
+            @Override
+            protected void onPostExecute(Collection<Person> peopleList) {
+                inProgressLayout.setVisibility(View.GONE);
+                if (peopleList.size() > 0) {
+                    recyclerView.setVisibility(View.VISIBLE);
+                    placeholderLayout.setVisibility(View.GONE);
+                } else {
+                    recyclerView.setVisibility(View.GONE);
+                    placeholderLayout.setVisibility(View.VISIBLE);
                 }
 
-                getActivity().runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-
-                        inProgressLayout.setVisibility(View.GONE);
-                        if (cachedPeopleList.size() > 0) {
-                            recyclerView.setVisibility(View.VISIBLE);
-                            placeholderLayout.setVisibility(View.GONE);
-                        } else {
-                            recyclerView.setVisibility(View.GONE);
-                            placeholderLayout.setVisibility(View.VISIBLE);
-                        }
-
-                        adapter.notifyDataSetChanged();
-                    }
-                });
+                adapter.setPeopleList(peopleList);
+                adapter.notifyDataSetChanged();
             }
-        });
+        };
+
+        task.execute();
 
         return view;
+    }
+
+    @Override
+    public void onDetach() {
+
+        if (task != null) {
+            task.cancel(true);
+        }
+
+        super.onDetach();
     }
 
     @OnClick(R.id.list_edit_user_button)
