@@ -1,5 +1,7 @@
 package com.isobar.sample.architecturepatterns.model;
 
+import android.util.Log;
+
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -12,6 +14,8 @@ import java.util.Map;
  */
 
 public class PersonDao {
+
+    private static final String TAG = PersonDao.class.getSimpleName();
 
     private int insertCount = 0;
     private Map<Integer, Person> people;
@@ -60,7 +64,8 @@ public class PersonDao {
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+
+            Log.i(TAG,"Sleep interrupted!!!");
         }
 
         return people.values();

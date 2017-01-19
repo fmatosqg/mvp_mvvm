@@ -34,13 +34,13 @@ public class CommonFragment extends Fragment {
             Fragment f = list.get(i);
             if (f != null) {
 //                Log.i(TAG, "Remove framgent" + f.getClass().getName() + " tag " + f.getTag());
-                transaction.remove(f);
+                //transaction.remove(f);
             } else {
 //                Log.i(TAG, "F IS NULL!!!!!!");
             }
         }
 
-        transaction.add(R.id.container, fragment, fragment.getClass().getSimpleName())
+        transaction.replace(R.id.container, fragment, fragment.getClass().getSimpleName())
                 .commit();
 
         supportFragmentManager.executePendingTransactions();
@@ -51,7 +51,7 @@ public class CommonFragment extends Fragment {
 
         supportFragmentManager
                 .beginTransaction()
-                .add(R.id.container, fragment, fragment.getClass().getCanonicalName())
+                .replace(R.id.container, fragment, fragment.getClass().getCanonicalName())
                 .commit();
 
         supportFragmentManager.executePendingTransactions();

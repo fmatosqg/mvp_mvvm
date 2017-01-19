@@ -30,5 +30,4 @@ public class Person {
         this.reminder = p.reminder;
     }
 
-
 }
