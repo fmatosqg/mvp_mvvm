@@ -71,7 +71,7 @@ public class UserListAdapterMvc extends RecyclerView.Adapter<UserListAdapterMvc.
         Thread thread = new Thread(new Runnable() {
             @Override
             public void run() {
-                if (cachedPeopleList == null || isCacheTooOld()) {
+                if (cachedPeopleList == null) {
                     cachedPeopleList = new ArrayList<Person>(getPersonDao().queryAll());
                 }
 
@@ -83,10 +83,6 @@ public class UserListAdapterMvc extends RecyclerView.Adapter<UserListAdapterMvc.
 
         thread.start();
 
-    }
-
-    private boolean isCacheTooOld() {
-        return false;
     }
 
     private PersonDao getPersonDao() {

@@ -22,21 +22,23 @@ import java.util.Collection;
 public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implements ListMvpPresenter {
 
     private static final String TAG = ListMvpPresenterImp.class.getSimpleName();
-    private boolean isAttached;
+    private final UserListAdapterMvp adapter;
 
     final private PersonDao personDao;
     private AsyncTask<Void, Void, Collection<Person>> task;
 
     private ListMvpPresenterImp() {
         personDao = null;
+        adapter = null;
     }
 
-    public ListMvpPresenterImp(ListMvpView view, PersonDao personDao) {
-        isAttached = false;
+    public ListMvpPresenterImp(ListMvpView view, PersonDao personDao, UserListAdapterMvp adapter) {
+
         this.personDao = personDao;
         task = null;
         attachView(view);
         view.showPlaceholder();
+        this.adapter = adapter;
     }
 
     @Override
@@ -86,7 +88,8 @@ public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implement
                 Log.i(TAG, "MVP - Loading people on screen");
 
                 if (personList.size() > 0) {
-                    getView().showList(personList);
+                    getView().showList();
+                    adapter.setPersonList(personList);
                 } else {
                     getView().showPlaceholder();
                 }

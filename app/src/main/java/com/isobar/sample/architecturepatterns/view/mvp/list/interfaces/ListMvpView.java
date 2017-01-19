@@ -10,7 +10,7 @@ import java.util.Collection;
  */
 public interface ListMvpView extends MvpView {
 
-    void showList(Collection<Person> peopleList);
+    void showList();
     void showSpinner();
     void showPlaceholder();
 }

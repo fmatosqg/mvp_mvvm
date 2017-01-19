@@ -5,6 +5,7 @@ import android.os.Looper;
 import android.support.annotation.UiThread;
 import android.support.annotation.WorkerThread;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,6 +19,7 @@ import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
 import com.isobar.sample.architecturepatterns.view.mvc.FragmentListMvc;
+import com.isobar.sample.architecturepatterns.view.mvc.UserListAdapterMvc;
 import com.isobar.sample.architecturepatterns.view.mvp.interfaces.MvpFragment;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpPresenter;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpView;
@@ -49,6 +51,7 @@ public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> 
 
     private ListMvpPresenter presenter;
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -59,8 +62,16 @@ public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> 
 
         titleView.setText("MVP");
 
-        presenter = new ListMvpPresenterImp(this, PersonDao.getInstance());
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        UserListAdapterMvp adapter = new UserListAdapterMvp();
+        recyclerView.setAdapter(adapter);
+
+        presenter = new ListMvpPresenterImp(this, PersonDao.getInstance(),adapter);
         presenter.loadUserList();
+
         return view;
     }
 
@@ -82,7 +93,7 @@ public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> 
     }
 
     @Override
-    public void showList(Collection<Person> peopleList) {
+    public void showList() {
 
         Log.i(TAG,"Showing list");
         recyclerView.setVisibility(View.VISIBLE);

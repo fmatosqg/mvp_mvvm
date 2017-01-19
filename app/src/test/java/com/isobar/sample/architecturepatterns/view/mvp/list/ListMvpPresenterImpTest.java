@@ -48,7 +48,7 @@ public class ListMvpPresenterImpTest {
 
         Mockito.when(personDaoOnePerson.queryAll()).thenReturn(onePerson);
 
-        listMvpPresenter = new ListMvpPresenterImp(view, personDaoOnePerson);
+        listMvpPresenter = new ListMvpPresenterImp(view, personDaoOnePerson, adapter);
 
         fragmentManager = Mockito.mock(FragmentManager.class);
         fragmentTransaction = Mockito.mock(FragmentTransaction.class);
