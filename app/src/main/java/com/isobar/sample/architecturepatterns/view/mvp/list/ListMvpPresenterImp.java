@@ -5,6 +5,8 @@ import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.util.TimingLogger;
 
+import com.isobar.sample.architecturepatterns.bus.EventBus;
+import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.mvc.FragmentFormMvc;
@@ -12,6 +14,7 @@ import com.isobar.sample.architecturepatterns.view.mvc.FragmentFormMvc;
 import com.isobar.sample.architecturepatterns.view.mvp.interfaces.MvpPresenterImpl;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpPresenter;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpView;
+import com.squareup.otto.Subscribe;
 
 
 import java.util.Collection;
@@ -39,6 +42,7 @@ public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implement
         attachView(view);
         view.showPlaceholder();
         this.adapter = adapter;
+        EventBus.getInstance().register(this);
     }
 
     @Override
@@ -70,6 +74,10 @@ public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implement
         getView().showSpinner();
         Log.i(TAG, "MVP - Loading people started");
 
+        loadPeopleList();
+    }
+
+    private void loadPeopleList() {
         task = new AsyncTask<Void, Void, Collection<Person>>() {
             @Override
             protected Collection<Person> doInBackground(Void... voids) {
@@ -102,7 +110,13 @@ public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implement
 
     @Override
     public void detachView() {
+        EventBus.getInstance().unregister(this);
         task.cancel(true);
         super.detachView();
+    }
+
+    @Subscribe
+    public void onNewPersonEvent(NewPersonEvent event) {
+        loadPeopleList();
     }
 }

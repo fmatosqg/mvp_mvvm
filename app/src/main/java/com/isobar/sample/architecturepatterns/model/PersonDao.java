@@ -2,11 +2,11 @@ package com.isobar.sample.architecturepatterns.model;
 
 import android.util.Log;
 
+import com.isobar.sample.architecturepatterns.bus.EventBus;
+import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
+
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -41,9 +41,30 @@ public class PersonDao {
         addPerson(new Person("John Doe", "john@doe", "jd", 10, "Martini"));
         addPerson(new Person("Mary Jane", "mary@jane", "mj", 11, "Beer"));
 
+        Thread th = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Thread.sleep(5000);
+                    addPerson(new Person("Baby Bob", "bob@justBorn.com", "bb", 0, "Milk"));
+                    EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
+                    Log.i(TAG, "New baby is born");
+
+                    Thread.sleep(4000);
+                    addPerson(new Person("Baby Be", "b@justBorn.com", "bb", 0, "Milk"));
+                    EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
+                    Log.i(TAG, "Another baby is born");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        th.start();
+
     }
 
-    private Person addPerson(Person person) {
+    synchronized private Person addPerson(Person person) {
 
         Person p = new Person(person);
 
@@ -55,17 +76,17 @@ public class PersonDao {
         return p;
     }
 
-    public int queryCount() {
+    synchronized public int queryCount() {
         return people.values().size();
     }
 
-    public Collection<Person> queryAll() {
+    synchronized public Collection<Person> queryAll() {
 
         try {
             Thread.sleep(2000);
         } catch (InterruptedException e) {
 
-            Log.i(TAG,"Sleep interrupted!!!");
+            Log.i(TAG, "Sleep interrupted!!!");
         }
 
         return people.values();
@@ -85,14 +106,6 @@ public class PersonDao {
     public Person updatePerson(Person p) {
 
         return addPerson(p);
-
-    }
-
-    public Person queryByPosition(int position) {
-
-        List<Person> peopleList = new LinkedList<Person>(queryAll());
-
-        return peopleList.get(position);
 
     }
 

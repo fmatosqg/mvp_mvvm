@@ -14,9 +14,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.isobar.sample.architecturepatterns.R;
+import com.isobar.sample.architecturepatterns.bus.Event;
+import com.isobar.sample.architecturepatterns.bus.EventBus;
+import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
+import com.squareup.otto.Subscribe;
 
 import java.util.Collection;
 
@@ -45,6 +49,7 @@ public class FragmentListMvc extends CommonFragment {
     LinearLayout inProgressLayout;
 
     private AsyncTask<Void, Void, Collection<Person>> task;
+    private UserListAdapterMvc adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -59,7 +64,7 @@ public class FragmentListMvc extends CommonFragment {
         LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(mLayoutManager);
 
-        final UserListAdapterMvc adapter = new UserListAdapterMvc();
+        adapter = new UserListAdapterMvc();
         recyclerView.setAdapter(adapter);
 
         placeholderLayout.setVisibility(View.GONE);
@@ -67,6 +72,14 @@ public class FragmentListMvc extends CommonFragment {
         inProgressLayout.setVisibility(View.VISIBLE);
         Log.i(TAG, "Loading people started");
 
+        loadPeopleList();
+
+        EventBus.getInstance().register(this);
+
+        return view;
+    }
+
+    private void loadPeopleList() {
 
         task = new AsyncTask<Void, Void, Collection<Person>>() {
             @Override
@@ -91,13 +104,12 @@ public class FragmentListMvc extends CommonFragment {
         };
 
         task.execute();
-
-        return view;
     }
 
     @Override
     public void onDetach() {
 
+        EventBus.getInstance().unregister(this);
         if (task != null) {
             task.cancel(true);
         }
@@ -128,5 +140,10 @@ public class FragmentListMvc extends CommonFragment {
     public static void createAndOpen(FragmentManager supportFragmentManager) {
 
         clearStackAndAdd(supportFragmentManager, new FragmentListMvc());
+    }
+
+    @Subscribe
+    public void onNewPersonEvent(NewPersonEvent event) {
+        loadPeopleList();
     }
 }
