@@ -10,7 +10,6 @@ import com.isobar.sample.architecturepatterns.view.mvp.interfaces.MvpPresenter;
 public interface ListMvpPresenter extends MvpPresenter<ListMvpView> {
 
     // view calls these
-    void editUser(FragmentManager activity);
     void newUser(FragmentManager activity);
     void loadUserList();
 }

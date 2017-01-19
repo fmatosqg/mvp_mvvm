@@ -117,20 +117,6 @@ public class FragmentListMvc extends CommonFragment {
         super.onDetach();
     }
 
-    @OnClick(R.id.list_edit_user_button)
-    void editUser() {
-
-        TimingLogger timings = new TimingLogger("TAG_MYJOB", "MyJob");
-        timings.addSplit("Start");
-        Log.i(TAG, "Edit");
-
-        Person person = PersonDao.getInstance().queryAll().iterator().next();
-        timings.addSplit("Query");
-        FragmentFormMvc.createAndOpen(getActivity().getSupportFragmentManager(), person);
-        timings.addSplit("Fragment transition");
-        timings.dumpToLog();
-    }
-
     @OnClick(R.id.list_new_user_button)
     void newUser() {
 

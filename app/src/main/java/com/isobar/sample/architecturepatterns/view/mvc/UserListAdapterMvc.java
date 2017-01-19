@@ -1,5 +1,7 @@
 package com.isobar.sample.architecturepatterns.view.mvc;
 
+import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +18,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 /**
  * Created by fabio.goncalves on 18/01/2017.
@@ -46,9 +49,11 @@ public class UserListAdapterMvc extends RecyclerView.Adapter<UserListAdapterMvc.
             person = personList.get(position);
             holder.userName.setText(person.name);
             holder.email.setText(person.email);
+            holder.person = person;
         } else {
             holder.userName.setText("");
             holder.email.setText("");
+            holder.person = null;
         }
     }
 
@@ -73,11 +78,30 @@ public class UserListAdapterMvc extends RecyclerView.Adapter<UserListAdapterMvc.
         @BindView(R.id.user_row_email)
         TextView email;
 
+        Person person;
+
         public ViewHolder(View itemView) {
             super(itemView);
 
             ButterKnife.bind(this, itemView);
         }
+
+        @OnClick(R.id.user_row_layout)
+        public void onClick(View view) {
+            FragmentFormMvc.createAndOpen(getActivityContext().getSupportFragmentManager(), person);
+        }
+
+        private AppCompatActivity getActivityContext() {
+            Context context = userName.getContext();
+
+            if (context instanceof AppCompatActivity) {
+                return (AppCompatActivity) context;
+            } else {
+                throw new RuntimeException("AAAAAhhhh contexts are complex! " + context.getClass().getCanonicalName());
+            }
+
+        }
     }
+
 
 }

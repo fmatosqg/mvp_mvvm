@@ -14,13 +14,6 @@
         tools:text="MVC demo"/>
 
     <Button
-        android:id="@+id/list_edit_user_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Edit User"
-        android:textSize="20dp"/>
-
-    <Button
         android:id="@+id/list_new_user_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -82,11 +82,6 @@ public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> 
         super.onDetach();
     }
 
-    @OnClick(R.id.list_edit_user_button)
-    void editUser() {
-        presenter.editUser(getActivity().getSupportFragmentManager());
-    }
-
     @OnClick(R.id.list_new_user_button)
     void newUser() {
         presenter.newUser(getActivity().getSupportFragmentManager());

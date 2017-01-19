@@ -46,20 +46,6 @@ public class ListMvpPresenterImp extends MvpPresenterImpl<ListMvpView> implement
     }
 
     @Override
-    public void editUser(FragmentManager fragmentManager) {
-
-        TimingLogger timings = new TimingLogger("TAG_MYJOB", "MyJob");
-        timings.addSplit("Start");
-        Log.i(TAG, "Edit");
-
-        Person person = PersonDao.getInstance().queryAll().iterator().next();
-        timings.addSplit("Query");
-        FragmentFormMvc.createAndOpen(fragmentManager, person);
-        timings.addSplit("Fragment transition");
-        timings.dumpToLog();
-    }
-
-    @Override
     public void newUser(FragmentManager fragmentManager) {
 
         FragmentFormMvc.createAndOpen(fragmentManager, (Person) null);

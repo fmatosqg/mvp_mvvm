@@ -1,9 +1,10 @@
 package com.isobar.sample.architecturepatterns.view.mvp.list;
 
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
+import com.isobar.sample.architecturepatterns.bus.EventBus;
+import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpPresenter;
@@ -12,14 +13,11 @@ import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpVi
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
 import org.mockito.Mockito;
 import org.robolectric.RobolectricTestRunner;
 
 import java.util.Collection;
 import java.util.LinkedList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import static org.mockito.Mockito.times;
 
@@ -34,12 +32,12 @@ public class ListMvpPresenterImpTest {
     private PersonDao personDaoOnePerson;
     private FragmentManager fragmentManager;
     private FragmentTransaction fragmentTransaction;
+    private UserListAdapterMvp adapter;
 
 
     @Before
     public void setup() {
 
-        Logger.getAnonymousLogger().log(Level.INFO, "Initiate classes");
         view = Mockito.mock(ListMvpView.class);
         personDaoOnePerson = Mockito.mock(PersonDao.class);
 
@@ -48,6 +46,7 @@ public class ListMvpPresenterImpTest {
 
         Mockito.when(personDaoOnePerson.queryAll()).thenReturn(onePerson);
 
+        adapter = Mockito.mock(UserListAdapterMvp.class);
         listMvpPresenter = new ListMvpPresenterImp(view, personDaoOnePerson, adapter);
 
         fragmentManager = Mockito.mock(FragmentManager.class);
@@ -72,18 +71,39 @@ public class ListMvpPresenterImpTest {
         Mockito.verify(personDaoOnePerson, times(1)).queryAll();
 
         Mockito.verify(view, times(1)).showSpinner();
-        Mockito.verify(view, times(1)).showList(Matchers.anyCollection());
+        Mockito.verify(view, times(1)).showList();
         Mockito.verify(view, times(1)).showPlaceholder();
     }
 
+    @Test
+    public void whenLoaDataNotifyAdapter() {
+
+        listMvpPresenter.loadUserList();
+
+        Mockito.verify(adapter,times(1)).notifyDataSetChanged();
+    }
 
     @Test
-    public void whenAddNewUserThenChangeFragment() {
+    public void whenNewUserNotifyAdapter() {
 
-        Mockito.verify(fragmentManager,times(0)).beginTransaction();
-        listMvpPresenter.newUser(fragmentManager);
+        EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
 
-        Mockito.verify(fragmentManager,times(1)).beginTransaction();
-        Mockito.verify(fragmentTransaction,times(1)).replace(Matchers.anyInt(), (Fragment) Matchers.anyObject(),Matchers.anyString());
+        Mockito.verify(adapter,times(1)).notifyDataSetChanged();
+
     }
+
+    @Test
+    public void whenLoadAndNewUserThenNotifyAdapterTwice() {
+
+
+        listMvpPresenter.loadUserList();
+
+        Mockito.verify(adapter,times(1)).notifyDataSetChanged();
+
+        EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
+
+        Mockito.verify(adapter,times(2)).notifyDataSetChanged();
+
+    }
+
 }
