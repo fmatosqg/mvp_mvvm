@@ -13,7 +13,7 @@ import com.isobar.sample.architecturepatterns.bus.EventBus;
 import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 
 
-import com.isobar.sample.architecturepatterns.databinding.FragmentListDbBinding;
+
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
 import com.squareup.otto.Subscribe;
 
@@ -28,11 +28,10 @@ public class FragmentListDataBinding extends CommonFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        FragmentListDbBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_db, container, false);
+        ListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_db, container, false);
 
-        ListViewModel listViewModel = new ListViewModel();
-
-        binding.setListViewModel(listViewModel);
+        binding.setListViewModel(new ListViewModelDataBinding());
+        binding.setListController(new ListControllerDataBinding());
         return binding.getRoot();
 
     }
