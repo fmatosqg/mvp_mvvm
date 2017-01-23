@@ -5,8 +5,8 @@
 
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".view.MainActivity"
     android:orientation="vertical"
+    tools:context=".view.MainActivity"
     tools:ignore="MergeRootFrame">
 
     <android.support.design.widget.TabLayout
@@ -29,13 +29,13 @@
         <android.support.design.widget.TabItem
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:text="MVVM"/>
+            android:text="Data Binding"/>
 
         <android.support.design.widget.TabItem
-            android:id="@+id/activity_tab_data_binding"
             android:layout_width="10dp"
             android:layout_height="10dp"
-            android:text="Data Binding"/>
+            android:text="MVVM"/>
+
 
     </android.support.design.widget.TabLayout>
 

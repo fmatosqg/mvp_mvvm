@@ -5,18 +5,14 @@ import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
-import android.view.View;
 
 import com.isobar.sample.architecturepatterns.R;
-import com.isobar.sample.architecturepatterns.model.PersonDao;
+import com.isobar.sample.architecturepatterns.view.databinding.list.FragmentListDataBinding;
 import com.isobar.sample.architecturepatterns.view.mvc.FragmentListMvc;
 import com.isobar.sample.architecturepatterns.view.mvp.list.FragmentListMvp;
 
-import java.util.List;
-
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -53,16 +49,22 @@ public class MainActivity extends AppCompatActivity {
 
     private void updateFragment(int position) {
 
-        switch (position) {
-            case 0: // MVC
-                FragmentListMvc.createAndOpen(getSupportFragmentManager());
-                break;
-            case 1: // MVP
-                FragmentListMvp.createAndOpen(getSupportFragmentManager());
-                break;
-            default:
+        TabLayout.Tab tab = tabLayout.getTabAt(position);
 
+        Log.i(TAG, "Tab name is " + tab.getText());
+
+
+        if ( "MVC".equals(tab.getText()) ) {
+            FragmentListMvc.createAndOpen(getSupportFragmentManager());
+        } else if ( "MVP".equals(tab.getText()) ) {
+            FragmentListMvp.createAndOpen(getSupportFragmentManager());
+        } else if ( "MVVM".equals(tab.getText()) ) {
+
+        } else if ( "Data Binding".equals(tab.getText()) ) {
+            FragmentListDataBinding.createAndOpen(getSupportFragmentManager());
         }
+
+
     }
 
 }

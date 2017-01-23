@@ -56,7 +56,7 @@ public class FragmentListMvc extends CommonFragment {
     private AsyncTask<Void, Void, Collection<Person>> task;
     private UserListAdapterMvc adapter;
 
-    private boolean isDaoFailed;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -88,16 +88,16 @@ public class FragmentListMvc extends CommonFragment {
 
     private void loadPeopleList() {
 
-        isDaoFailed = false;
-
         task = new AsyncTask<Void, Void, Collection<Person>>() {
+
+            private boolean isDaoFailed = false;
             @Override
             protected Collection<Person> doInBackground(Void... voids) {
                 Collection<Person> peopleList = null;
                 try {
                     peopleList = PersonDao.getInstance().queryAll();
                 } catch (RandomFailureException e) {
-                    e.printStackTrace();
+                    Log.i(TAG,e.getMessage());
                     isDaoFailed = true;
                 }
 
