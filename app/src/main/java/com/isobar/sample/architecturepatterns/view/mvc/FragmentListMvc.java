@@ -6,7 +6,6 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.util.TimingLogger;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +13,6 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.isobar.sample.architecturepatterns.R;
-import com.isobar.sample.architecturepatterns.bus.Event;
 import com.isobar.sample.architecturepatterns.bus.EventBus;
 import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 import com.isobar.sample.architecturepatterns.model.Person;
