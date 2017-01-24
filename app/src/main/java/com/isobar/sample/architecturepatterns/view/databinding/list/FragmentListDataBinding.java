@@ -9,12 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.isobar.sample.architecturepatterns.R;
-import com.isobar.sample.architecturepatterns.bus.EventBus;
-import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
-
-
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
-import com.squareup.otto.Subscribe;
 
 /**
  * Created by fabio.goncalves on 12/01/2017.
@@ -32,7 +27,7 @@ public class FragmentListDataBinding extends CommonFragment {
 
         modelDataBinding = new ListViewModelDataBinding();
         binding.setListViewModel(modelDataBinding);
-        binding.setListController(new ListControllerDataBinding());
+        binding.setListController(new ListControllerDataBinding(getActivity().getSupportFragmentManager()));
         return binding.getRoot();
 
     }
