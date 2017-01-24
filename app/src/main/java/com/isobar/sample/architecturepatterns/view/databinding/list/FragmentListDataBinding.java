@@ -13,7 +13,6 @@ import com.isobar.sample.architecturepatterns.bus.EventBus;
 import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 
 
-
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
 import com.squareup.otto.Subscribe;
 
@@ -23,6 +22,7 @@ import com.squareup.otto.Subscribe;
 public class FragmentListDataBinding extends CommonFragment {
 
     private final static String TAG = FragmentListDataBinding.class.getSimpleName();
+    private ListViewModelDataBinding modelDataBinding;
 
     @Nullable
     @Override
@@ -30,22 +30,17 @@ public class FragmentListDataBinding extends CommonFragment {
 
         ListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_db, container, false);
 
-        binding.setListViewModel(new ListViewModelDataBinding());
+        modelDataBinding = new ListViewModelDataBinding();
+        binding.setListViewModel(modelDataBinding);
         binding.setListController(new ListControllerDataBinding());
         return binding.getRoot();
 
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        EventBus.getInstance().register(this);
-    }
-
-    @Override
-    public void onPause() {
-        EventBus.getInstance().unregister(this);
-        super.onPause();
+    public void onDestroy() {
+        modelDataBinding.destroy();
+        super.onDestroy();
     }
 
     public static void createAndOpen(FragmentManager supportFragmentManager) {
@@ -53,8 +48,4 @@ public class FragmentListDataBinding extends CommonFragment {
         clearStackAndAdd(supportFragmentManager, new FragmentListDataBinding());
     }
 
-    @Subscribe
-    public void onNewPersonEvent(NewPersonEvent event) {
-//        loadPeopleList();
-    }
 }
