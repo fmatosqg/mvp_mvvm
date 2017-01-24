@@ -7,7 +7,7 @@
     <data class=".view.databinding.list.RowBinder">
         <variable
             name="rowViewModel"
-            type="com.isobar.sample.architecturepatterns.view.databinding.list.RowDataBinding"/>
+            type="com.isobar.sample.architecturepatterns.view.databinding.list.viewmodel.RowViewModelDataBinding"/>
     </data>
 
     <android.support.v7.widget.CardView

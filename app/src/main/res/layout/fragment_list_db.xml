@@ -7,11 +7,11 @@
 
         <variable
             name="listViewModel"
-            type="com.isobar.sample.architecturepatterns.view.databinding.list.ListViewModelDataBinding"/>
+            type="com.isobar.sample.architecturepatterns.view.databinding.list.viewmodel.ListViewModelDataBinding"/>
 
         <variable
             name="listController"
-            type="com.isobar.sample.architecturepatterns.view.databinding.list.ListControllerDataBinding"/>
+            type="com.isobar.sample.architecturepatterns.view.databinding.list.viewmodel.ListControllerDataBinding"/>
     </data>
 
 
@@ -52,7 +52,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:visibility="visible"
+                android:visibility="@{listViewModel.showList}"
                 app:configuration="@{listViewModel.recyclerConfiguration}"
                 tools:visibility="visible"
                 />
@@ -75,7 +75,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:visibility="@{listViewModel.isShowPlaceholder()}"
+                android:visibility="@{listViewModel.showPlaceholder}"
                 tools:visibility="gone"
                 >
 

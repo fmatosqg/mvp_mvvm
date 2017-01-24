@@ -1,4 +1,4 @@
-package com.isobar.sample.architecturepatterns.view.databinding.list;
+package com.isobar.sample.architecturepatterns.view.databinding.list.viewmodel;
 
 import android.support.v4.app.FragmentManager;
 import android.util.Log;

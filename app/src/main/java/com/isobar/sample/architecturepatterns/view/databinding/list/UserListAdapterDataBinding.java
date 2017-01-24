@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 
 import com.isobar.sample.architecturepatterns.R;
 import com.isobar.sample.architecturepatterns.model.Person;
+import com.isobar.sample.architecturepatterns.view.databinding.list.viewmodel.RowViewModelDataBinding;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -18,7 +19,7 @@ import java.util.List;
  * Created by fabio.goncalves on 24/01/2017.
  */
 
-class UserListAdapterDataBinding extends RecyclerView.Adapter<UserListAdapterDataBinding.ViewHolder> {
+public class UserListAdapterDataBinding extends RecyclerView.Adapter<UserListAdapterDataBinding.ViewHolder> {
 
     private final static String TAG = UserListAdapterDataBinding.class.getSimpleName();
 
@@ -51,7 +52,7 @@ class UserListAdapterDataBinding extends RecyclerView.Adapter<UserListAdapterDat
             }
         }
 
-        holder.getBinding().setRowViewModel(new RowDataBinding(person));
+        holder.getBinding().setRowViewModel(new RowViewModelDataBinding(person));
     }
 
     @Override
@@ -71,7 +72,6 @@ class UserListAdapterDataBinding extends RecyclerView.Adapter<UserListAdapterDat
             this.listPeople = new ArrayList<>(peopleList);
         }
     }
-
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         private final RowBinder binding;

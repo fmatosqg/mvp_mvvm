@@ -10,6 +10,8 @@ import android.view.ViewGroup;
 
 import com.isobar.sample.architecturepatterns.R;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
+import com.isobar.sample.architecturepatterns.view.databinding.list.viewmodel.ListControllerDataBinding;
+import com.isobar.sample.architecturepatterns.view.databinding.list.viewmodel.ListViewModelDataBinding;
 
 /**
  * Created by fabio.goncalves on 12/01/2017.
