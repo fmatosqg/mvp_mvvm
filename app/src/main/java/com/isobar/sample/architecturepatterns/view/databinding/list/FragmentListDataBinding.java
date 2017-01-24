@@ -23,9 +23,9 @@ public class FragmentListDataBinding extends CommonFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
-        ListBinding binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_db, container, false);
+        ListBinder binding = DataBindingUtil.inflate(inflater, R.layout.fragment_list_db, container, false);
 
-        modelDataBinding = new ListViewModelDataBinding();
+        modelDataBinding = new ListViewModelDataBinding(getActivity());
         binding.setListViewModel(modelDataBinding);
         binding.setListController(new ListControllerDataBinding(getActivity().getSupportFragmentManager()));
         return binding.getRoot();

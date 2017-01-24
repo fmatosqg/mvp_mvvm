@@ -1,6 +1,6 @@
 package com.isobar.sample.architecturepatterns.view.databinding.list;
 
-import android.support.v7.app.AppCompatActivity;
+import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -14,75 +14,75 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-import butterknife.ButterKnife;
-
 /**
- * Created by fabio.goncalves on 18/01/2017.
+ * Created by fabio.goncalves on 24/01/2017.
  */
-public class UserListAdapterDataBinding extends RecyclerView.Adapter<UserListAdapterDataBinding.ViewHolder> {
 
-    private List<Person> personList;
+class UserListAdapterDataBinding extends RecyclerView.Adapter<UserListAdapterDataBinding.ViewHolder> {
+
+    private final static String TAG = UserListAdapterDataBinding.class.getSimpleName();
+
+    private List<Person> listPeople;
+
+    private List<ViewHolder> viewHolderList;
 
     public UserListAdapterDataBinding() {
-        personList = new LinkedList<>();
+        viewHolderList = new LinkedList<>();
     }
 
     @Override
-    public UserListAdapterDataBinding.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.user_row_view, parent, false);
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View v = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.user_row_view_db, parent, false);
+        ViewHolder holder = new ViewHolder(v);
+        viewHolderList.add(holder);
+        return holder;
 
-        ViewHolder vh = new ViewHolder(v);
-
-        return vh;
     }
 
     @Override
-    public void onBindViewHolder(UserListAdapterDataBinding.ViewHolder holder, int position) {
+    public void onBindViewHolder(ViewHolder holder, int position) {
 
-//        Person person = null;
-//
-//        if (position < personList.size()) {
-//            person = personList.get(position);
-//            holder.userName.setText(person.name);
-//            holder.email.setText(person.email);
-//            holder.person = person;
-//        } else {
-//            holder.userName.setText("");
-//            holder.email.setText("");
-//            holder.person = null;
-//        }
+        Person person = null;
+        if (position < getItemCount()) {
+            person = listPeople.get(position);
+            if (position == 1) {
+                person = null;
+            }
+        }
+
+        holder.getBinding().setRowViewModel(new RowDataBinding(person));
     }
 
     @Override
     public int getItemCount() {
-        return personList.size();
+
+        int count = 0;
+        if (listPeople != null) {
+            count = listPeople.size();
+        }
+
+        return count;
     }
 
-    public void setPeopleList(Collection<Person> cachedPeopleList) {
-        if (cachedPeopleList != null) {
-            this.personList = new ArrayList<>(cachedPeopleList);
-        } else {
-            this.personList = new LinkedList<>();
+    public void setPeopleList(Collection<Person> peopleList) {
+
+        if (peopleList != null) {
+            this.listPeople = new ArrayList<>(peopleList);
         }
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        Person person;
+    public class ViewHolder extends RecyclerView.ViewHolder {
+        private final RowBinder binding;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
-            ButterKnife.bind(this, itemView);
+            binding = DataBindingUtil.bind(itemView);
         }
 
-        public void onClick(View view) {
-//            FragmentFormMvc.createAndOpen(getActivityContext().getSupportFragmentManager(), person);
+        public RowBinder getBinding() {
+            return binding;
         }
-
     }
-
 }
-
-
-

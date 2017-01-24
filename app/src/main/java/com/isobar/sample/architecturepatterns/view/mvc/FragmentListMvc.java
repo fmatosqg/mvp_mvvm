@@ -154,3 +154,11 @@ public class FragmentListMvc extends CommonFragment {
         loadPeopleList();
     }
 }
+
+/**
+ * - bind to views
+ * - toggle them on and off, fill in texts
+ * - get the model
+ * - manage fragment lifecycle
+ * - listen to external events
+ */

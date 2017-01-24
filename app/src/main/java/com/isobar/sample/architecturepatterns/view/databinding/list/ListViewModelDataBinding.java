@@ -1,18 +1,22 @@
 package com.isobar.sample.architecturepatterns.view.databinding.list;
 
+import android.content.Context;
 import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingConversion;
 import android.os.AsyncTask;
+import android.support.v7.widget.DefaultItemAnimator;
+import android.support.v7.widget.LinearLayoutManager;
 import android.util.Log;
 import android.view.View;
 
-import com.isobar.sample.architecturepatterns.BR;
+import com.isobar.sample.architecturepatterns.*;
 import com.isobar.sample.architecturepatterns.bus.EventBus;
 import com.isobar.sample.architecturepatterns.bus.NewPersonEvent;
 import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.model.RandomFailureException;
+import com.isobar.sample.architecturepatterns.view.databinding.util.RecyclerConfiguration;
 import com.squareup.otto.Subscribe;
 
 import java.util.Collection;
@@ -33,7 +37,12 @@ public class ListViewModelDataBinding extends BaseObservable {
     private boolean isShowList;
     private AsyncTask<Void, Void, Collection<Person>> task;
 
-    public ListViewModelDataBinding() {
+    private final Context context;
+    private final RecyclerConfiguration recyclerConfiguration;
+    private UserListAdapterDataBinding adapter;
+
+    public ListViewModelDataBinding(Context context) {
+        this.context = context;
 
         isInProgress = false;
         isShowPlaceholder = true;
@@ -43,7 +52,12 @@ public class ListViewModelDataBinding extends BaseObservable {
         title = "Data Binding";
 
         EventBus.getInstance().register(this);
+
+        recyclerConfiguration = new RecyclerConfiguration();
+        initRecyclerView();
         loadList();
+
+
     }
 
     public void destroy() {
@@ -89,7 +103,10 @@ public class ListViewModelDataBinding extends BaseObservable {
 
                 setError(isDaoFailed);
 
-                //adapter.setList(peopleList)
+                adapter.setPeopleList(peopleList);
+                adapter.notifyDataSetChanged();
+                recyclerConfiguration.notifyPropertyChanged(BR.adapter);
+                recyclerConfiguration.notifyPropertyChanged(BR.person);
 
             }
         };
@@ -144,6 +161,20 @@ public class ListViewModelDataBinding extends BaseObservable {
     public void setShowList(boolean showList) {
         isShowList = showList;
         notifyPropertyChanged(BR.showList);
+    }
+
+    private void initRecyclerView() {
+
+        adapter = new UserListAdapterDataBinding();
+
+        recyclerConfiguration.setLayoutManager(new LinearLayoutManager(context));
+//        recyclerConfiguration.setItemAnimator(new DefaultItemAnimator());
+        recyclerConfiguration.setAdapter(adapter);
+    }
+
+    @Bindable
+    public RecyclerConfiguration getRecyclerConfiguration() {
+        return recyclerConfiguration;
     }
 
     @Subscribe

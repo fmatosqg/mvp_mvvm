@@ -1,7 +1,5 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
-ANDROID_DAILY_OVERRIDE="6d0ac2b035bc21fbbc01cd1f165b3236f73bab3e"
-
 
 buildscript {
     repositories {
