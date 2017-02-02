@@ -1,9 +1,6 @@
 package com.isobar.sample.architecturepatterns.view.mvp.list;
 
 import android.os.Bundle;
-import android.os.Looper;
-import android.support.annotation.UiThread;
-import android.support.annotation.WorkerThread;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,16 +12,10 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.isobar.sample.architecturepatterns.R;
-import com.isobar.sample.architecturepatterns.model.Person;
 import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
-import com.isobar.sample.architecturepatterns.view.mvc.FragmentListMvc;
-import com.isobar.sample.architecturepatterns.view.mvc.UserListAdapterMvc;
-import com.isobar.sample.architecturepatterns.view.mvp.interfaces.MvpFragment;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpPresenter;
 import com.isobar.sample.architecturepatterns.view.mvp.list.interfaces.ListMvpView;
-
-import java.util.Collection;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -36,7 +27,7 @@ import static android.view.View.VISIBLE;
 /**
  * Created by fabio.goncalves on 13/01/2017.
  */
-public class FragmentListMvp extends MvpFragment<ListMvpView, ListMvpPresenter> implements ListMvpView {
+public class FragmentListMvp extends CommonFragment implements ListMvpView {
 
     private final static String TAG = FragmentListMvp.class.getSimpleName();
 
