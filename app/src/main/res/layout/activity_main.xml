@@ -36,6 +36,10 @@
             android:layout_height="10dp"
             android:text="MVVM"/>
 
+        <android.support.design.widget.TabItem
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:text="RxMVP"/>
 
     </android.support.design.widget.TabLayout>
 

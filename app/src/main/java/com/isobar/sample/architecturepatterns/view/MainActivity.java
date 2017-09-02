@@ -10,6 +10,7 @@ import com.isobar.sample.architecturepatterns.R;
 import com.isobar.sample.architecturepatterns.view.databinding.list.FragmentListDataBinding;
 import com.isobar.sample.architecturepatterns.view.mvc.FragmentListMvc;
 import com.isobar.sample.architecturepatterns.view.mvp.list.FragmentListMvp;
+import com.isobar.sample.architecturepatterns.view.rxMvp.FragmentListRxMvp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -62,6 +63,8 @@ public class MainActivity extends AppCompatActivity {
 
         } else if ( "Data Binding".equals(tab.getText()) ) {
             FragmentListDataBinding.createAndOpen(getSupportFragmentManager());
+        } else if ("RxMVP".equals(tab.getText())) {
+            FragmentListRxMvp.createAndOpen(getSupportFragmentManager());
         }
 
 
