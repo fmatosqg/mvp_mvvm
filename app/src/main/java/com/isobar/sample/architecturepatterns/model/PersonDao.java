@@ -9,6 +9,10 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.subjects.BehaviorSubject;
+import io.reactivex.subjects.Subject;
+
 /**
  * Created by fabio.goncalves on 12/01/2017.
  */
@@ -22,6 +26,8 @@ public class PersonDao {
     private static PersonDao instance;
     private boolean failureProgrammed = true;
 
+    final private Subject<NewPersonEvent> newPersonEventSubject;
+
     public static PersonDao getInstance() {
 
         if (instance == null) {
@@ -33,6 +39,7 @@ public class PersonDao {
 
     private PersonDao() {
         people = new HashMap();
+        newPersonEventSubject = BehaviorSubject.create();
         addAllPeople();
     }
 
@@ -50,12 +57,14 @@ public class PersonDao {
                     failureProgrammed = true;
                     addPerson(new Person("Baby Bob", "bob@justBorn.com", "bb", 0, "Milk"));
                     EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
+                    newPersonEventSubject.onNext(new NewPersonEvent());
                     Log.i(TAG, "New baby is born");
 
                     Thread.sleep(4000);
                     failureProgrammed = false;
                     addPerson(new Person("Baby Be", "b@justBorn.com", "bb", 0, "Milk"));
                     EventBus.getInstance().postOnAnyThread(new NewPersonEvent());
+                    newPersonEventSubject.onNext(new NewPersonEvent());
                     Log.i(TAG, "Another baby is born");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
@@ -114,6 +123,11 @@ public class PersonDao {
 
         return addPerson(p);
 
+    }
+
+    public Observable<NewPersonEvent> getNewPersonObservable() {
+
+        return newPersonEventSubject.share();
     }
 
 }

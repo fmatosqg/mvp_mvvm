@@ -24,7 +24,7 @@ import butterknife.OnClick;
 /**
  * Created by fabio.goncalves on 19/01/2017.
  */
-class UserListAdapterMvp extends RecyclerView.Adapter<UserListAdapterMvp.ViewHolder> {
+public class UserListAdapterMvp extends RecyclerView.Adapter<UserListAdapterMvp.ViewHolder> {
 
     private List<Person> personList;
 

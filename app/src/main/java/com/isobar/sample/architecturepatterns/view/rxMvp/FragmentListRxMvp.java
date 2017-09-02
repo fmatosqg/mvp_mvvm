@@ -2,6 +2,7 @@ package com.isobar.sample.architecturepatterns.view.rxMvp;
 
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,12 +11,16 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.isobar.sample.architecturepatterns.R;
+import com.isobar.sample.architecturepatterns.model.PersonDao;
 import com.isobar.sample.architecturepatterns.view.common.CommonFragment;
+import com.isobar.sample.architecturepatterns.view.mvp.list.UserListAdapterMvp;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.internal.schedulers.IoScheduler;
 import io.reactivex.observers.DisposableObserver;
 
 /**
@@ -44,6 +49,7 @@ public class FragmentListRxMvp extends CommonFragment {
 
     private ListRxMvpPresenter presenter;
     private CompositeDisposable compositeDisposable;
+    private UserListAdapterMvp adapter;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -55,10 +61,20 @@ public class FragmentListRxMvp extends CommonFragment {
 
 
         compositeDisposable = new CompositeDisposable();
-        presenter = new ListRxMvpPresenter();
+        presenter = new ListRxMvpPresenter(PersonDao.getInstance());
+
+
+        LinearLayoutManager mLayoutManager = new LinearLayoutManager(getActivity());
+        recyclerView.setLayoutManager(mLayoutManager);
+
+        adapter = new UserListAdapterMvp();
+        recyclerView.setAdapter(adapter);
 
         compositeDisposable.add(
-                presenter.subscribe(new DisposableObserver<ListStateRxMvp>() {
+                presenter.getStateObservable()
+                        .subscribeOn(new IoScheduler())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribeWith(new DisposableObserver<ListStateRxMvp>() {
                                                  @Override
                                                  public void onNext(ListStateRxMvp newState) {
                                                      updateView(newState);
@@ -74,7 +90,9 @@ public class FragmentListRxMvp extends CommonFragment {
 
                                                  }
                                              }
-                ));
+                        )
+        );
+
 
         presenter.loadUserList();
 
@@ -94,12 +112,19 @@ public class FragmentListRxMvp extends CommonFragment {
         recyclerView.setVisibility(newState.showList ? View.VISIBLE : View.GONE);
         inProgressLayout.setVisibility(newState.showSpinner ? View.VISIBLE : View.GONE);
 
+        if (newState.getPersonList() != null) {
+            adapter.setPersonList(newState.getPersonList());
+            adapter.notifyDataSetChanged();
+        }
+
+        getActivity().setTitle(newState.title);
     }
 
     @Override
     public void onDestroy() {
         compositeDisposable.clear();
         compositeDisposable = null;
+        presenter.stop();
         super.onDestroy();
     }
 
