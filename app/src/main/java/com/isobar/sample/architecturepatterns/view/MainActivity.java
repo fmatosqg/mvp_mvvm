@@ -3,6 +3,7 @@ package com.isobar.sample.architecturepatterns.view;
 
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
+
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
@@ -58,8 +59,6 @@ public class MainActivity extends AppCompatActivity {
             FragmentListMvc.createAndOpen(getSupportFragmentManager());
         } else if ( "MVP".equals(tab.getText()) ) {
             FragmentListMvp.createAndOpen(getSupportFragmentManager());
-        } else if ( "MVVM".equals(tab.getText()) ) {
-
         } else if ( "Data Binding".equals(tab.getText()) ) {
             FragmentListDataBinding.createAndOpen(getSupportFragmentManager());
         }
